@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Myolve Lab ｜ 数理最適化エンジニア [氏名]</title>
+<meta name="description" content="数理最適化モデルの設計・実装と、筋電計測デバイスの開発を行う個人事業 Myolve Lab のポートフォリオ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --field:#F1F3F2; --ink:#15181E; --muted:#4A4F57; --rule:#D5D9D7;
+  --accent:#0F7B6C; --accent-soft:#E3F1EE; --mark-bg:#15181E; --mark-line:#FFFFFF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#15181E; --field:#1D2129; --ink:#EEF0EE; --muted:#AEB4BB; --rule:#2F3540;
+    --accent:#5CC7B2; --accent-soft:#1B2F2C; --mark-bg:#EEF0EE; --mark-line:#15181E;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15181E; --field:#1D2129; --ink:#EEF0EE; --muted:#AEB4BB; --rule:#2F3540;
+  --accent:#5CC7B2; --accent-soft:#1B2F2C; --mark-bg:#EEF0EE; --mark-line:#15181E;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans JP","Hiragino Sans",sans-serif;font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+.latin{font-family:"Sora","Noto Sans JP",sans-serif}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.ph{color:var(--muted);background:var(--field);padding:0 6px;border-radius:3px}
+
+/* header */
+.site-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:24px;padding-bottom:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand-name{font-family:"Sora",sans-serif;font-weight:600;font-size:18px;letter-spacing:-0.01em;display:flex;gap:5px}
+.brand-name span:last-child{color:var(--accent)}
+.site-nav{display:flex;gap:24px;font-size:14px}
+.site-nav a{color:var(--muted);text-decoration:none;padding:10px 0}
+.site-nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding-top:72px;padding-bottom:40px}
+.hero h1{font-size:clamp(34px,6vw,60px);line-height:1.25;font-weight:700;letter-spacing:0.02em;margin:0 0 28px;text-wrap:balance}
+.hero .role{font-size:17px;margin:0 0 8px;font-weight:500}
+.hero .lead{max-width:36em;color:var(--muted);margin:0}
+.signal{display:block;width:100%;height:auto;margin-top:56px;overflow:visible}
+.signal path{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:4200;stroke-dashoffset:4200;animation:draw 2.2s cubic-bezier(.6,.1,.3,1) .2s forwards}
+.signal circle{fill:var(--accent);opacity:0;animation:land .4s ease-out 2.3s forwards}
+.signal-caption{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:10px}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes land{to{opacity:1}}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .signal path{animation:none;stroke-dashoffset:0}
+  .signal circle{animation:none;opacity:1}
+}
+
+/* sections */
+section{padding-top:88px;padding-bottom:8px}
+h2{font-size:26px;font-weight:700;letter-spacing:0.04em;margin:0 0 32px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+h3{font-size:19px;font-weight:700;margin:0 0 10px;line-height:1.5}
+
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px 48px}
+.services p{margin:0;color:var(--muted);font-size:15px}
+
+.project{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;padding:40px 0;border-bottom:1px solid var(--rule)}
+.project:last-child{border-bottom:0}
+.status{display:inline-block;font-size:13px;font-weight:500;color:var(--accent);background:var(--accent-soft);padding:2px 10px;border-radius:999px;margin-bottom:14px}
+.project p{margin:0 0 16px;color:var(--muted)}
+.project p:last-child{margin-bottom:0}
+.specs{margin:0;display:grid;grid-template-columns:auto 1fr;column-gap:24px;row-gap:12px;font-size:15px;align-content:start}
+.specs dt{font-weight:500;white-space:nowrap}
+.specs dd{margin:0;color:var(--muted)}
+.themes{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:15px}
+.themes li{padding:14px 18px;background:var(--field);border-radius:6px}
+.themes strong{display:block;font-weight:500;color:var(--ink)}
+.themes span{color:var(--muted);font-size:14px}
+
+.stack{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.stack li{border:1px solid var(--rule);border-radius:999px;padding:6px 16px;font-size:14px}
+
+.contact{background:var(--field);border-radius:10px;padding:40px;margin-top:8px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center}
+.contact p{margin:0;color:var(--muted)}
+.contact dl{margin:16px 0 0;display:grid;grid-template-columns:auto 1fr;column-gap:20px;row-gap:6px;font-size:15px}
+.contact dt{font-weight:500}
+.contact dd{margin:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 28px;background:var(--accent);color:var(--paper);border-radius:6px;text-decoration:none;font-weight:500;white-space:nowrap}
+.btn:hover{filter:brightness(1.08)}
+
+.site-foot{padding-top:64px;padding-bottom:40px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:760px){
+  .hero{padding-top:40px}
+  section{padding-top:64px}
+  .project{grid-template-columns:minmax(0,1fr);gap:24px}
+  .contact{grid-template-columns:minmax(0,1fr);padding:28px}
+  .site-nav{gap:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head">
+    <a class="brand" href="#top" aria-label="Myolve Lab トップへ">
+      <svg width="32" height="32" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+        <rect width="80" height="80" rx="18" fill="var(--mark-bg)"/>
+        <path d="M9 52 L12 48 L14 55 L16 45 L18 52 L22 52 L29 22 L40 45 L51 22 L58 52 L64 52" stroke="var(--mark-line)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="69.5" cy="52" r="4.2" fill="var(--accent)"/>
+      </svg>
+      <span class="brand-name"><span>Myolve</span><span>Lab</span></span>
+    </a>
+    <nav class="site-nav" aria-label="ページ内">
+      <a href="#services">対応領域</a>
+      <a href="#work">取り組み</a>
+      <a href="#contact">連絡先</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <h1>計測して、<br>数式で解く。</h1>
+      <p class="role">数理最適化エンジニア　<span class="ph">[氏名]</span></p>
+      <p class="lead">業務の課題を数理最適化モデルに落とし込み、Python で実装します。回路・基板・筐体の設計から製造手配まで一貫して行い、筋電計測デバイスを自作で開発しています。</p>
+      <svg class="signal" viewBox="0 0 1180 130" role="img" aria-label="筋電信号の波形が収束し、一点に至る線">
+        <path d="M0 90 L90 90 L99 83 L109 98 L116 81 L123 98 L130 78 L138 98 L148 78 L156 100 L166 79 L177 103 L185 72 L196 112 L207 70 L214 115 L221 68 L229 110 L237 66 L248 112 L256 69 L267 119 L276 67 L283 120 L294 64 L305 121 L314 57 L324 122 L332 49 L340 90 L372 90 L410 18 L462 78 L514 18 L552 90 L562 68 L572 108 L582 76 L592 101 L602 82 L612 96 L622 86 L632 93 L642 90 L1140 90"/>
+        <circle cx="1158" cy="90" r="7"/>
+      </svg>
+      <div class="signal-caption"><span>計測</span><span>最適解</span></div>
+    </div>
+
+    <section id="services" aria-labelledby="h-services">
+      <h2 id="h-services">対応領域</h2>
+      <div class="services">
+        <div>
+          <h3>数理最適化モデルの設計・実装</h3>
+          <p>配送・配車、シフト作成、在庫・発注など、業務上の判断を目的関数と制約条件に整理し、Python（PuLP）で解ける形にします。物流分野での実務経験があります。</p>
+        </div>
+        <div>
+          <h3>筋電計測・データ解析</h3>
+          <p>電極・アナログ前段の設計から、フィルタ処理や特徴量の抽出まで、生体信号を扱える形にするところを担当します。</p>
+        </div>
+        <div>
+          <h3>回路・基板・筐体の設計と製造手配</h3>
+          <p>Fusion 360 で回路設計、基板レイアウト、筐体設計までを一つの環境で行い、JLCPCB などの基板製造サービスへの発注まで一貫して対応します。初期検証では自作 PCB による短期間の試作も行えます。</p>
+        </div>
+        <div>
+          <h3>生体信号デバイスの試作</h3>
+          <p>回路・基板・筐体に加えて、BLE 通信と Flutter アプリまでを一人で通して、動く試作品をつくります。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" aria-labelledby="h-work">
+      <h2 id="h-work">取り組み</h2>
+
+      <article class="project">
+        <div>
+          <span class="status">開発中</span>
+          <h3>自作の筋電計測デバイス</h3>
+          <p>市販の筋電計測装置は導入コストが高いため、アナログ前段から自作した小型の計測ポッドを開発しています。現在は 2ch 同時計測・リアルタイム表示の試作段階です。</p>
+          <p>回路構成の判断や基板製作の検証は、記事として順次公開します。<br><span class="ph">[記事URL]</span></p>
+        </div>
+        <dl class="specs">
+          <dt>計測</dt><dd>2ch 同時計測（多チャンネル化を予定）</dd>
+          <dt>アナログ前段</dt><dd>OP747 による自作回路。2 段目のハイパスフィルタで電極オフセットを早期に除去</dd>
+          <dt>電源</dt><dd>単電源構成（チャージポンプで昇圧・安定化し、仮想 GND で信号をバイアス）。LiPo 3.7V 40mAh</dd>
+          <dt>通信・制御</dt><dd class="latin">XIAO nRF52840 / BLE</dd>
+          <dt>基板</dt><dd>トナー転写による自作 PCB。印刷テストで実用最小の絶縁幅 0.2mm を確認</dd>
+          <dt>アプリ</dt><dd>Flutter によるリアルタイム波形表示</dd>
+        </dl>
+      </article>
+
+      <article class="project">
+        <div>
+          <span class="status">公開準備中</span>
+          <h3>数理最適化の例題集</h3>
+          <p>よくある業務課題を題材に、問題の整理から定式化、実装、結果の読み方までをノートブックと解説記事にまとめます。データは公開データまたは合成データを使います。</p>
+          <p><span class="ph">[GitHub URL]</span></p>
+        </div>
+        <ul class="themes">
+          <li><strong>シフト作成</strong><span>必要人数・勤務間隔・希望休を満たす勤務表</span></li>
+          <li><strong>配送計画</strong><span>車両台数と積載量の制約下での配送ルート</span></li>
+          <li><strong>在庫・発注</strong><span>欠品と在庫コストのバランスをとる発注量</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section aria-labelledby="h-stack">
+      <h2 id="h-stack">使用技術</h2>
+      <ul class="stack">
+        <li class="latin">Python</li>
+        <li class="latin">PuLP</li>
+        <li class="latin">Flutter</li>
+        <li>Fusion 360（回路・基板・筐体設計）</li>
+        <li class="latin">BLE / nRF52840</li>
+        <li>アナログ回路設計</li>
+        <li>基板設計・製造発注（JLCPCB など）</li>
+        <li>自作 PCB（トナー転写）</li>
+      </ul>
+    </section>
+
+    <section id="contact" aria-labelledby="h-contact">
+      <h2 id="h-contact">連絡先</h2>
+      <div class="contact">
+        <div>
+          <p>数理最適化のご相談、筋電計測に関するお問い合わせはメールでお送りください。</p>
+          <dl>
+            <dt>メール</dt><dd><span class="ph">[メールアドレス]</span></dd>
+            <dt>GitHub</dt><dd><span class="ph">[GitHub URL]</span></dd>
+            <dt>記事</dt><dd><span class="ph">[Zenn / Qiita URL]</span></dd>
+          </dl>
+        </div>
+        <a class="btn" href="mailto:">メールで相談する</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <span class="latin">© Myolve Lab</span>
+    <span>個人事業　<span class="ph">[氏名]</span></span>
+  </footer>
+</div>
+</body>
+</html>
